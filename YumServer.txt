@@ -1,0 +1,60 @@
+1.)Create FTP
+2.) IP Manage
+3.) Need dvd or iso file
+4.) configure yum repo file
+
+
+
+ON LOCAL SERVER:
+for ftp:-
+ftp package file--vsftpd (vsftpd.service)
+To install--- rpm -ivf /PathOfImage/AppStream/packages/vsftpd-3.0.3
+/var/ftp/pub will be created
+create a directory with any name /var/ftp/pub/rhel9
+copy all packages from image to /var/ftp/pub/rhel9/
+iptables -f (to flush or refresh ip)
+systemctl enable --now vsftpd.service
+mv /etc/yum.repos.d/redhat.repo /root/desktop
+vim /etc/yum.repos.d/server.repo
+content: 
+[base]
+name=rhel9
+baseurl=file:///var/ftp/pub/rhel9/BaseOS
+enabled=1
+gpgcheck=0
+
+name=rhel9
+baseurl=file:///var/ftp/pub/rhel9/AppStrem
+enabled=1
+gpgcheck=0
+
+
+yum update all
+
+
+HTTP BASED YUM SERVER:
+Install httpd
+systemctl enable --now firewalld.service
+firewall-cmd --zone=public --permanent --add-service=httpd
+firewall-cmd --zone=public --permanent --add-service=httpds
+firewall-cmd --reload
+copy all packages from RHELimage to /path
+we can copy the packages to documentroot (/var/www/html)
+vim /etc/httpd/conf/httpd.conf
+content:
+<directory "/path">
+options all indexes followsymlinks
+allowoverride none
+require all granted
+</directory>
+
+systemctl restart httpd
+rm -rf /etc/httpd/conf.d/welcome.conf
+httpd -t
+setfacl -R -m u:apache;rwx /path
+getenforce
+chcon -Rt httpd_sys_conten_t /path
+
+
+on clint side:
+just configure the repository with created URL using system ip

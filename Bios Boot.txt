@@ -1,0 +1,18 @@
+			*Boot Process*
+
+-->Press power button
+
+-->bios initialize and perform post (power on self test)
+
+-->post checks all the pepheral devices are connectd to motherboard and working properly or not
+
+-->system checks for boot priority and search for MBR and find the boot loader -- Grub2 is default boot loader in linux
+
+-->load boot loader cnfig file-- /boot/grub2/grub.cfg
+
+-->boot loader load kernel and initramfs into ram --initramfs is also an OS to start a kernel
+-->kernel initialize all hardware parts and start first process -- systemd
+
+-->kernel switches root file system into read-write mode
+
+-->sys looks for default target like multi-user.target, graphicle.target,single-user.target
