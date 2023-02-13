@@ -1,0 +1,25 @@
+1.)
+options {
+	directory "/var/named";
+	recursion no;
+};
+zone "blackmastermind" IN {
+	type master;
+	file "master";
+};
+
+
+2.)
+listen 8080
+<virtualhost *:8080>
+	servername mail.blackmastermind.tech
+	documentroot /var/www/mail              (can be /master)
+</virtualhost>
+
+<directory /var/www/mail>			(/master)
+	require all granted                 	(in case of /master)
+	options indexes followsymlinks
+	directoryindex index.html
+	order allow,deny
+	allow from 190.168.1.1
+</directory>

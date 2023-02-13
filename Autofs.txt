@@ -1,0 +1,23 @@
+Automounter
+
+
+1.)yum install autofs -y
+
+2.)id remoteuser
+
+3.)su - remoteuser
+
+4.)systemctl enable --now autofs
+
+5.)vim /etc/auto.master.d/abc.autofs
+--Entry:- /-	/etc/auto.misc
+
+6.)vim auto.misc
+--Entry:- /ourhome/remoteuser	-rw,soft,intr	hostname/ip:/ourhome/remoteuser
+
+7.)systemctl restart autofs
+
+8.)su - remoteuser
+pwd (to cross check)
+
+9.)df -h
